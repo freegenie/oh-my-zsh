@@ -12,3 +12,8 @@ bindkey "^[[1~" beginning-of-line
 bindkey "^[[F"  end-of-line
 bindkey "^[[4~" end-of-line
 bindkey ' ' magic-space    # also do history expansion on space
+
+bindkey "^[[A" history-beginning-search-backward 
+# bindkey "^[[D"
+bindkey "^[[B" history-beginning-search-forward
+# bindkey "^[[C"
