@@ -4,7 +4,7 @@ then
   exit
 else
   echo "Cloning Oh My Zsh..."
-  /usr/bin/env git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+  /usr/bin/env git clone git://github.com/freegenie/oh-my-zsh.git ~/.oh-my-zsh
 fi
 
 echo "Looking for an existing zsh config..."
