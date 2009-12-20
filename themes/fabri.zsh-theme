@@ -17,7 +17,7 @@
 function project_info() {  
   d=$( echo $(cd .. && pwd) | grep -e "\w\+/\w\+\$" -o )
   if test $d ; then 
-    PROJECT_NAME="%{$fg_bold[yellow]%} ➜ $d%{$reset_color%}
+    PROJECT_NAME="%{$fg_bold[yellow]%}> $d%{$reset_color%}
  "
   else
     PROJECT_NAME=''
@@ -26,17 +26,49 @@ function project_info() {
   echo $PROJECT_NAME
 }
 
-alias last-work="ls -ltr1 ~/Work | tail -n10 | grep -e "/$" --color=never "
+function lwork() {  
+  i=0
+  for entry in $(ls -ltr1 ~/Work | tail -n10 | grep -e "/\$") ; do 
+    i=$(($i+1))
+    echo "$i)  $entry" 
+  done 
+  echo "Number?"
+  read line 
+  i=0    
+  for entry in $(ls -ltr1 ~/Work | tail -n10 | grep -e "/\$") ; do 
+    i=$(($i+1))
+    if test $i -eq $line ; then        
+      cd ~/Work/$entry
+    fi
+  done  
+}
 
 # Quick switch among projects s
-function work() {
+
+function work() {  
+  if test "$1" = "" ; then 
+    lwork
+    return 
+  fi  
   l=$(ls -1 ~/Work | grep $1 | grep -e "/\$")
-  # echo $l
   d=$(echo $l | wc -l | grep -e "\w\+" | sed -e "s/ //g")
   if test $d -eq 1 ; then 
     cd ~/Work/$l
-  else     
-    echo $l | grep $1
+  else    
+    i=0
+    for entry in $(ls ~/Work | grep $1 | grep -e "/\$") ; do
+      i=$(($i+1))
+      echo "$i)  $entry" | grep $1 
+    done
+    echo "Number? "      
+    read line
+    i=0
+    for entry in $(ls ~/Work | grep $1 | grep -e "/\$") ; do     
+      i=$(($i+1))
+      if test $i -eq $line ; then        
+        cd ~/Work/$entry
+      fi
+    done
   fi
 }
 
