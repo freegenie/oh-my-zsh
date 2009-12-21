@@ -44,6 +44,7 @@ function lwork() {
     fi
   done  
 }
+
 function check_dir() {
   if test -d ~/.work_func ; then 
   else 
@@ -66,7 +67,7 @@ function work() {
   l=$(ls -1 ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g" )
   d=$(echo $l | wc -l | grep -e "\w\+" | sed -e "s/ //g" )
   if test $d -eq 1 ; then 
-    cd ~/Work/$l
+    open_work_dir $1 
   else    
     i=0
     for entry in $(ls ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g") ; do
