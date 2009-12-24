@@ -14,6 +14,15 @@
 # [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 
+rails_git() {  
+  echo "log/*.log" >> .gitignore
+  echo "tmp/**/*" >> .gitignore
+  echo "doc/api" >> .gitignore
+  echo "doc/app" >> .gitignore   
+  touch log/.gitignore
+  touch tmp/.gitignore  
+}
+
 function project_info() {  
   d=$( echo $(cd .. && pwd) | grep -e "\w\+/\w\+\$" -o )
   if test $d ; then 
@@ -67,7 +76,7 @@ function work() {
   l=$(ls -1 ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g" )
   d=$(echo $l | wc -l | grep -e "\w\+" | sed -e "s/ //g" )
   if test $d -eq 1 ; then 
-    open_work_dir $1 
+    open_work_dir $l 
   else    
     i=0
     for entry in $(ls ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g") ; do
