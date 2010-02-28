@@ -1,6 +1,6 @@
 # get the name of the branch we are on
 function git_prompt_info() {
-  if test -d .git -o -d ../.git; then
+  if test -d .git -o -d ../.git -o -d ../../.git -o -d ../../../.git; then
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
     branch=${ref#refs/heads/}
     CURRENT_BRANCH="git:(%{$fg[red]%}${branch}%{$fg[blue]%})%{$reset_color%}$(parse_git_dirty)"

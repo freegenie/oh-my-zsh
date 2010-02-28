@@ -23,78 +23,19 @@ rails_git() {
   touch tmp/.gitignore  
 }
 
-function project_info() {  
-  d=$( echo $(cd .. && pwd) | grep -e "\w\+/\w\+\$" -o )
+function project_info() {
+  # d=$(pwd | egrep 'Work\/(\w+)' -o )  
+  d=$(pwd | egrep "Work\/(\w+)" -o | egrep -e "[0-9A-za-z]+\$"  -o )
+  # d=$( echo $(cd .. && pwd) | grep -e "\w\+/\w\+\$" -o )  
   if test $d ; then 
-    PROJECT_NAME="%{$fg_bold[yellow]%}> $d%{$reset_color%}
- "
+    # PROJECT_NAME="%{$fg_bold[yellow]%}> $d%{$reset_color%}"
+    PROJECT_NAME="%{$fg_bold[yellow]%}$d%{$reset_color%}"    
   else
     PROJECT_NAME=''
   fi
-
   echo $PROJECT_NAME
 }
 
-function lwork() {  
-  i=0
-  # for entry in $(ls -ltr1 ~/Work | tail -n10 | grep -e "/\$" | sed -e "s/\///g") ; do 
-  for entry in $(ls -lt1 ~/.work_func | head) ; do 
-    i=$(($i+1))
-    echo "$i)  $entry" 
-  done 
-  echo "Number?"
-  read line 
-  i=0    
-  # for entry in $(ls -ltr1 ~/Work | tail -n10 | grep -e "/\$" | sed -e "s/\///g") ; do 
-  for entry in $(ls -lt1 ~/.work_func | head) ; do   
-    i=$(($i+1))
-    if test $i -eq $line ; then        
-      open_work_dir $entry
-    fi
-  done  
-}
+PROMPT='%{$fg_bold[red]%}%m%{$fg_bold[green]%} $(project_info) %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
 
-function check_dir() {
-  if test -d ~/.work_func ; then 
-  else 
-    mkdir ~/.work_func 
-  fi
-}
-
-function open_work_dir() {
-  check_dir
-  touch ~/.work_func/$1
-  cd ~/Work/$1
-}
-
-
-function work() {  
-  if test "$1" = "" ; then 
-    lwork
-    return 
-  fi  
-  l=$(ls -1 ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g" )
-  d=$(echo $l | wc -l | grep -e "\w\+" | sed -e "s/ //g" )
-  if test $d -eq 1 ; then 
-    open_work_dir $l 
-  else    
-    i=0
-    for entry in $(ls ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g") ; do
-      i=$(($i+1))
-      echo "$i)  $entry" | grep $1 
-    done
-    echo "Number? "      
-    read line
-    i=0
-    for entry in $(ls ~/Work | grep $1 | grep -e "/\$" | sed -e "s/\///g") ; do     
-      i=$(($i+1))
-      if test $i -eq $line ; then        
-        open_work_dir $entry        
-      fi
-    done
-  fi
-}
-
-PROMPT='$(project_info)%{$fg_bold[red]%}%m%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
-
-
+export WORDCHARS=${WORDCHARS//\//}
