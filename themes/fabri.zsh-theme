@@ -33,9 +33,14 @@ function project_info() {
   else
     PROJECT_NAME=''
   fi
-  echo $PROJECT_NAME
+  echo " $PROJECT_NAME" 
 }
 
-PROMPT='%{$fg_bold[red]%}%m%{$fg_bold[green]%} $(project_info) %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+
+function gem_home_info() {
+  gh=$(echo $GEM_HOME | cut -d "@" -f 2)
+  echo " @$gh"
+}
+PROMPT='%{$fg_bold[red]%}%m%{$fg_bold[green]%}$(gem_home_info)$(project_info) %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
 
 export WORDCHARS=${WORDCHARS//\//}
